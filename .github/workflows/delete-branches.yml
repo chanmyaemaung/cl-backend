@@ -16,17 +16,23 @@ jobs:
 
       - name: Delete Merged Branches
         run: |
-          git config --global user.name "${{ github.actor }}"
+          git config --global user.name "chanmyaemaung"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
-          # Fetch all branches
+          
+          echo "Fetching all branches..."
           git fetch --prune
 
-          # Get all merged branches except the main branch
+          echo "Listing all branches merged into 'main'..."
           branches=$(git branch -r --merged origin/main | grep -v 'main' | grep -v 'HEAD' | sed 's/origin\///')
-
-          # Loop over branches and delete them
-          for branch in $branches; do
-            echo "Deleting branch $branch"
-            git push origin --delete $branch
-          done
+          
+          if [ -z "$branches" ]; then
+            echo "No merged branches found to delete."
+          else
+            echo "Merged branches found:"
+            echo "$branches"
+            
+            for branch in $branches; do
+              echo "Attempting to delete branch: $branch"
+              git push origin --delete $branch
+            done
+          fi
