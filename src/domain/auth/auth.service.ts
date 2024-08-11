@@ -46,7 +46,7 @@ export class AuthService {
 
   async verifyUser(email: string, password: string) {
     try {
-      const user = await this.userService.getUsers({ email });
+      const user = await this.userService.getUser({ email });
       const authenticated = await compare(password, user.password);
 
       if (!authenticated) {
