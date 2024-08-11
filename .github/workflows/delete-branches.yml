@@ -22,9 +22,9 @@ jobs:
           echo "Fetching all branches..."
           git fetch --prune
 
-          echo "Listing all branches merged into 'main'..."
-          branches=$(git branch -r --merged origin/main | grep -v 'main' | grep -v 'HEAD' | sed 's/origin\///')
-          
+          echo "Listing all branches merged into 'chen/main'..."
+          branches=$(git branch -r --merged chen/main | grep -v 'main' | grep -v 'HEAD' | sed 's/chen\///')
+
           if [ -z "$branches" ]; then
             echo "No merged branches found to delete."
           else
@@ -33,6 +33,6 @@ jobs:
             
             for branch in $branches; do
               echo "Attempting to delete branch: $branch"
-              git push origin --delete $branch
+              git push chen --delete $branch
             done
           fi
