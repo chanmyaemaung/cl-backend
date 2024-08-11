@@ -13,7 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup GitHub CLI
+        uses: cli/setup-gh@v1
+
       - name: Delete branch
-        uses: SvanBoxel/delete-merged-branch@main
+        run: |
+          branch_name="${{ github.event.pull_request.head.ref }}"
+          echo "Attempting to delete branch: $branch_name"
+          gh pr view ${{ github.event.pull_request.number }} --json mergeCommit
+          if [ $? -eq 0 ]; then
+            echo "Pull request was merged, proceeding with branch deletion"
+            gh api repos/${{ github.repository }}/git/refs/heads/$branch_name -X DELETE
+            if [ $? -eq 0 ]; then
+              echo "Branch $branch_name successfully deleted"
+            else
+              echo "Failed to delete branch $branch_name"
+              exit 1
+            fi
+          else
+            echo "Pull request was not merged, skipping branch deletion"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
