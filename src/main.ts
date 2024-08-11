@@ -1,5 +1,5 @@
 import { AppConfiguration, corsOptions } from '@/lib';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -16,6 +16,11 @@ async function bootstrap() {
 
   // Prefix all routes with /api
   app.setGlobalPrefix('api');
+
+  // Enable validation globally
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
 
   // Get the port from the configuration
   const configService =
