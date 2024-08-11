@@ -42,7 +42,7 @@ export class UsersService {
     }
   }
 
-  async getUsers(query: FilterQuery<User>) {
+  async getUser(query: FilterQuery<User>) {
     const user = (await this.userModel.findOne(query)).toObject();
 
     if (!user) {
@@ -50,5 +50,10 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async getUsers(): Promise<User[]> {
+    // Omit password from response
+    return this.userModel.find({}, { password: 0 }).lean();
   }
 }

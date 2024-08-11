@@ -2,6 +2,7 @@ import { AppConfiguration, corsOptions } from '@/lib';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -21,6 +22,9 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
+
+  // Cookie parser
+  app.use(cookieParser());
 
   // Get the port from the configuration
   const configService =
