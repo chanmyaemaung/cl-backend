@@ -18,13 +18,13 @@ jobs:
         run: |
           git config --global user.name "chanmyaemaung"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
+          
           echo "Fetching all branches..."
           git fetch --prune
 
           echo "Listing all branches merged into 'main'..."
           branches=$(git branch -r --merged origin/main | grep -v 'main' | grep -v 'HEAD' | sed 's/origin\///')
-
+          
           if [ -z "$branches" ]; then
             echo "No merged branches found to delete."
           else
