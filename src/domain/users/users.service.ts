@@ -2,10 +2,11 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'bcryptjs';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './schema/user-schema';
 
@@ -39,5 +40,15 @@ export class UsersService {
     } catch (error) {
       throw new BadRequestException('Failed to create user');
     }
+  }
+
+  async getUsers(query: FilterQuery<User>) {
+    const user = (await this.userModel.findOne(query)).toObject();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 }

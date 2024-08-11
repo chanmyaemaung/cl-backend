@@ -1,3 +1,4 @@
+import { AuthModule } from '@/domain/auth/auth.module';
 import { UsersModule } from '@/domain/users/users.module';
 import { configuration, validationSchema } from '@/lib/config';
 import { Module } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       inject: [ConfigService],
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
