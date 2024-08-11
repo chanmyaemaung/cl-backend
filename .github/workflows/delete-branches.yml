@@ -1,0 +1,32 @@
+name: Delete Merged Branches
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  delete-branches:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Delete Merged Branches
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+          # Fetch all branches
+          git fetch --prune
+
+          # Get all merged branches except the main branch
+          branches=$(git branch -r --merged origin/main | grep -v 'main' | grep -v 'HEAD' | sed 's/origin\///')
+
+          # Loop over branches and delete them
+          for branch in $branches; do
+            echo "Deleting branch $branch"
+            git push origin --delete $branch
+          done
