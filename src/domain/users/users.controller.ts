@@ -12,7 +12,7 @@ export class UsersController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async getUsers(@CurrentUser() user: User) {
-    this.logger.log(`User ${user.email} is fetching users`);
+    this.logger.verbose(`User ${user.email} is fetching users`);
 
     return this.userService.getUsers();
   }

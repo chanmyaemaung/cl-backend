@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'bcryptjs';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './schema/user-schema';
 
@@ -55,5 +55,9 @@ export class UsersService {
   async getUsers(): Promise<User[]> {
     // Omit password from response
     return this.userModel.find({}, { password: 0 }).lean();
+  }
+
+  async updateUser(query: FilterQuery<User>, data: UpdateQuery<User>) {
+    return this.userModel.findOneAndUpdate(query, data);
   }
 }
