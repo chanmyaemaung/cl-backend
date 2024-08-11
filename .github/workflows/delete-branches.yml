@@ -18,7 +18,7 @@ jobs:
         run: |
           git config --global user.name "chanmyaemaung"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
+          
           echo "Fetching all branches..."
           git fetch --prune
 
