@@ -1,4 +1,5 @@
 import {
+  GoogleStrategy,
   JwtRefreshStrategy,
   JwtStrategy,
   LocalStrategy,
@@ -13,6 +14,12 @@ import { AuthService } from './auth.service';
 @Module({
   imports: [UsersModule, PassportModule, JwtModule],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtRefreshStrategy,
+    GoogleStrategy,
+  ],
 })
 export class AuthModule {}
